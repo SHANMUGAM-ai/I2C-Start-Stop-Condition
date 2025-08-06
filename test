@@ -1,0 +1,18 @@
+`timescale 1ns/1ps
+module tb_i2c_ctrl;
+    reg clk = 0, reset, start, stop;
+    wire scl, sda;
+
+    i2c_ctrl uut(clk, reset, start, stop, scl, sda);
+    always #5 clk = ~clk;
+
+    initial begin
+        $dumpfile("i2c.vcd"); $dumpvars(0, tb_i2c_ctrl);
+        reset = 1; #10; reset = 0;
+        start = 1; stop = 0; #10;
+        start = 0; stop = 1; #10;
+        stop = 0;
+        #20;
+        $finish;
+    end
+endmodule
